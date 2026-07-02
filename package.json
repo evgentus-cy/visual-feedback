@@ -76,6 +76,12 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "playground": "pnpm --filter visual-feedback-playground dev",
+    "release:patch": "npm version patch",
+    "release:minor": "npm version minor",
+    "release:major": "npm version major",
+    "preversion": "test \"$(git symbolic-ref --short HEAD)\" = main || { echo 'Release only from main'; exit 1; } && pnpm lint && pnpm typecheck && pnpm test && pnpm build",
+    "version": "node scripts/stamp-changelog.mjs && prettier --write CHANGELOG.md && git add CHANGELOG.md",
+    "postversion": "git push --follow-tags",
     "prepublishOnly": "pnpm run build"
   },
   "dependencies": {

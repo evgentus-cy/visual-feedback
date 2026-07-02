@@ -57,7 +57,21 @@ of the single `visual-feedback` package.
 
 ## Releasing (maintainers)
 
-1. Update `CHANGELOG.md` and bump `version` in `package.json`.
-2. Commit, then tag: `git tag vX.Y.Z && git push --tags`.
-3. The [Release workflow](.github/workflows/release.yml) publishes to npm with provenance
-   (requires the `NPM_TOKEN` repo secret).
+Describe your changes under `## [Unreleased]` in `CHANGELOG.md` as they land. Then one command:
+
+```sh
+pnpm release:patch   # or release:minor / release:major
+```
+
+It chains the standard npm `version` lifecycle:
+
+1. `preversion` — refuses to run off `main`, then lint + typecheck + test + build.
+2. `npm version <bump>` — bumps `package.json` (refuses on a dirty tree).
+3. `version` — stamps the `[Unreleased]` notes as `[X.Y.Z] - date` in `CHANGELOG.md`
+   (fails if Unreleased is empty — every release must say what changed).
+4. npm commits `vX.Y.Z` and tags it; `postversion` pushes with `--follow-tags`.
+5. The tag triggers the [Release workflow](.github/workflows/release.yml), which re-runs the
+   checks and publishes to npm **with provenance** (requires the `NPM_TOKEN` repo secret; the
+   workflow also refuses a tag that doesn't match `package.json`).
+
+Nothing is ever published from a laptop — `npm publish` happens only in CI.

@@ -19,6 +19,12 @@ jobs:
           node-version: 22
           cache: pnpm
           registry-url: https://registry.npmjs.org
+      - name: Tag must match package.json version
+        run: |
+          pkg="v$(node -p "require('./package.json').version")"
+          if [ "$pkg" != "$GITHUB_REF_NAME" ]; then
+            echo "Tag $GITHUB_REF_NAME does not match package.json ($pkg)" && exit 1
+          fi
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint
       - run: pnpm typecheck
