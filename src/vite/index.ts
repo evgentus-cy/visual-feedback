@@ -1,5 +1,5 @@
 /**
- * visual-feedback/vite — dev-only Vite plugin.
+ * @evgentus/visual-feedback/vite — dev-only Vite plugin.
  *
  * Tags every JSX opening element with `data-vf-source="<relativeFile>:<line>:<col>"` during dev,
  * so visual-feedback can map a clicked DOM element back to its source. This is the

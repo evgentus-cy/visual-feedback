@@ -1,5 +1,5 @@
 {
-  "name": "visual-feedback",
+  "name": "@evgentus/visual-feedback",
   "version": "0.1.0",
   "description": "Comment on UI directly in your running dev app and push the batch — with exact source locations and screenshots — straight into your live Claude Code session via an MCP channel.",
   "license": "MIT",

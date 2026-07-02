@@ -3,7 +3,7 @@
  *
  * A host app calls {@link createVisualFeedback} with a {@link Transport} (where batches go)
  * and, optionally, a source resolver / screenshot capturer. The Nuxt adapter
- * (`visual-feedback/nuxt`) wires the default `data-v-inspector` resolver and a transport
+ * (`@evgentus/visual-feedback/nuxt`) wires the default `data-v-inspector` resolver and a transport
  * that POSTs to the MCP channel server — but the core has no Vue/Nuxt dependency.
  */
 import { mountOverlay } from './overlay.ts';

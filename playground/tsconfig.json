@@ -10,9 +10,9 @@
     // (the package exports point at dist/, which only exists after a build). Runtime
     // resolution is unaffected: Vite resolves via node_modules (link:..) + exports.
     "paths": {
-      "visual-feedback": ["../src/core/index.ts"],
-      "visual-feedback/vite": ["../src/vite/index.ts"],
-      "visual-feedback/react": ["../src/react/index.tsx"]
+      "@evgentus/visual-feedback": ["../src/core/index.ts"],
+      "@evgentus/visual-feedback/vite": ["../src/vite/index.ts"],
+      "@evgentus/visual-feedback/react": ["../src/react/index.tsx"]
     },
     "strict": true,
     "skipLibCheck": true,

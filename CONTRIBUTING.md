@@ -45,13 +45,13 @@ src/mcp     MCP channel server (bin: visual-feedback-mcp) + its testable core (c
 ```
 
 All five are built by one `tsup.config.ts` into `dist/<area>/` and exposed as subpath exports
-of the single `visual-feedback` package.
+of the single `@evgentus/visual-feedback` package.
 
 ## Pull requests
 
 - Keep the zero-production-footprint invariant: nothing from this package may end up in a
   consumer's production bundle. The Nuxt module self-disables (`!nuxt.options.dev`), the Vite
-  plugin is `apply: 'serve'`, the React adapter no-ops on `import.meta.env.PROD`.
+  plugin is `apply: 'serve'`, the React adapter mounts only when the bundler statically marks a dev build (`import.meta.env.DEV === true`).
 - Add or update tests for behavior changes (`*.spec.ts` colocated with the source).
 - Run `pnpm lint && pnpm typecheck && pnpm test && pnpm build` before pushing — CI runs the same.
 

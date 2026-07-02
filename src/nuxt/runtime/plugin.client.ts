@@ -4,7 +4,7 @@
  * is true (see module.ts), so it never enters a production build.
  */
 import { defineNuxtPlugin, useRuntimeConfig } from 'nuxt/app';
-import { createVisualFeedback } from 'visual-feedback';
+import { createVisualFeedback } from '@evgentus/visual-feedback';
 
 export default defineNuxtPlugin(() => {
   // Bracket access: this runtime file is built in isolation (the PublicRuntimeConfig

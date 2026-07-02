@@ -7,7 +7,7 @@
     "types": ["node"],
     "jsx": "react-jsx",
     "paths": {
-      "visual-feedback": ["./src/core/index.ts"]
+      "@evgentus/visual-feedback": ["./src/core/index.ts"]
     },
     "strict": true,
     "noUncheckedIndexedAccess": true,

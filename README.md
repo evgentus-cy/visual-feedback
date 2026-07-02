@@ -8,7 +8,7 @@ Comment on UI **directly in your running dev app** and push those comments — w
 the terminal.
 
 [![CI](https://github.com/evgentus-cy/visual-feedback/actions/workflows/ci.yml/badge.svg)](https://github.com/evgentus-cy/visual-feedback/actions/workflows/ci.yml)
-[![npm](https://img.shields.io/npm/v/visual-feedback)](https://www.npmjs.com/package/visual-feedback)
+[![npm](https://img.shields.io/npm/v/%40evgentus%2Fvisual-feedback)](https://www.npmjs.com/package/@evgentus/visual-feedback)
 [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 <!-- TODO: demo GIF — click → comment → Claude fixes (docs/demo.gif) -->
@@ -34,13 +34,13 @@ needs no extra port mapping for `3199`.
 
 One npm package, five entry points:
 
-| Entry                   | What it is                                                                                                 |
-| ----------------------- | ---------------------------------------------------------------------------------------------------------- |
-| `visual-feedback`       | framework-agnostic overlay (shadow DOM, comment queue, source resolver, connection indicator, screenshots) |
-| `visual-feedback/nuxt`  | Nuxt 4 module — one `modules` line, self-disables in production                                            |
-| `visual-feedback/react` | `<VisualFeedback />` adapter                                                                               |
-| `visual-feedback/vite`  | Vite plugin that tags JSX with `data-vf-source="file:line:col"` (the React source-mapping path)            |
-| `visual-feedback/mcp`   | programmatic API of the channel server; the `visual-feedback-mcp` **bin** is the bridge into Claude Code   |
+| Entry                             | What it is                                                                                                 |
+| --------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `@evgentus/visual-feedback`       | framework-agnostic overlay (shadow DOM, comment queue, source resolver, connection indicator, screenshots) |
+| `@evgentus/visual-feedback/nuxt`  | Nuxt 4 module — one `modules` line, self-disables in production                                            |
+| `@evgentus/visual-feedback/react` | `<VisualFeedback />` adapter                                                                               |
+| `@evgentus/visual-feedback/vite`  | Vite plugin that tags JSX with `data-vf-source="file:line:col"` (the React source-mapping path)            |
+| `@evgentus/visual-feedback/mcp`   | programmatic API of the channel server; the `visual-feedback-mcp` **bin** is the bridge into Claude Code   |
 
 ## Prerequisites
 
@@ -57,7 +57,7 @@ One npm package, five entry points:
 ### 1. Install
 
 ```sh
-npm i -D visual-feedback
+npm i -D @evgentus/visual-feedback
 ```
 
 ### 2. Wire the overlay
@@ -67,7 +67,7 @@ npm i -D visual-feedback
 ```ts
 // nuxt.config.ts
 export default defineNuxtConfig({
-  modules: ['visual-feedback/nuxt'],
+  modules: ['@evgentus/visual-feedback/nuxt'],
   // optional: visualFeedback: { port: 3199 },
 });
 ```
@@ -78,7 +78,7 @@ export default defineNuxtConfig({
 ```ts
 // vite.config.ts
 import react from '@vitejs/plugin-react';
-import { visualFeedbackSource } from 'visual-feedback/vite';
+import { visualFeedbackSource } from '@evgentus/visual-feedback/vite';
 
 export default defineConfig({
   plugins: [visualFeedbackSource(), react()], // before the React plugin
@@ -87,7 +87,7 @@ export default defineConfig({
 
 ```tsx
 // App root — render only in dev
-import { VisualFeedback } from 'visual-feedback/react';
+import { VisualFeedback } from '@evgentus/visual-feedback/react';
 
 {
   import.meta.env.DEV && <VisualFeedback />;
@@ -95,7 +95,7 @@ import { VisualFeedback } from 'visual-feedback/react';
 ```
 
 **Anything else (vanilla):** call `createVisualFeedback({ transport, healthCheck })` from
-`visual-feedback` — see [Core options](#core-options). The core resolver also reads
+`@evgentus/visual-feedback` — see [Core options](#core-options). The core resolver also reads
 `data-v-inspector` (Nuxt DevTools / `vite-plugin-vue-inspector`) and `data-inspector-*`
 (`react-dev-inspector` / Locator), so an existing inspector works without the Vite plugin.
 
@@ -183,7 +183,7 @@ org blocks Channels, the tool cannot deliver (there is no fallback).
 
 ```ts
 export default defineNuxtConfig({
-  modules: ['visual-feedback/nuxt'],
+  modules: ['@evgentus/visual-feedback/nuxt'],
   visualFeedback: { port: 3199 }, // default
 });
 ```

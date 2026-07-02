@@ -3,7 +3,7 @@ import { defineConfig } from 'tsup';
 /**
  * One build per subpath export. Each build owns its outDir (so `clean` is safe) and mirrors
  * the runtime it targets: core/react are browser code, vite/nuxt/mcp run in Node during dev.
- * Package dependencies are auto-external in tsup; `visual-feedback` self-imports (react + the
+ * Package dependencies are auto-external in tsup; `@evgentus/visual-feedback` self-imports (react + the
  * Nuxt runtime plugin) stay external and resolve through the package's own `exports` at runtime.
  */
 export default defineConfig([
@@ -41,7 +41,7 @@ export default defineConfig([
     target: 'node20',
     // Nuxt virtuals + framework deps stay external — the runtime plugin file is shipped
     // unbundled and resolved by the consumer's Nuxt/Vite at build time.
-    external: ['nuxt/app', '#imports', '#app', '@nuxt/schema', 'visual-feedback'],
+    external: ['nuxt/app', '#imports', '#app', '@nuxt/schema', '@evgentus/visual-feedback'],
   },
   {
     entry: { index: 'src/react/index.tsx' },
@@ -50,7 +50,7 @@ export default defineConfig([
     dts: true,
     clean: true,
     sourcemap: true,
-    external: ['visual-feedback'],
+    external: ['@evgentus/visual-feedback'],
   },
   {
     entry: { server: 'src/mcp/server.ts', channel: 'src/mcp/channel.ts' },

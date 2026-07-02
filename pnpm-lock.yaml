@@ -90,15 +90,15 @@ importers:
 
   playground:
     dependencies:
+      '@evgentus/visual-feedback':
+        specifier: link:..
+        version: link:..
       react:
         specifier: ^19.2.0
         version: 19.2.7
       react-dom:
         specifier: ^19.2.0
         version: 19.2.7(react@19.2.7)
-      visual-feedback:
-        specifier: link:..
-        version: link:..
     devDependencies:
       '@vitejs/plugin-react':
         specifier: ^6.0.3

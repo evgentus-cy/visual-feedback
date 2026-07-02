@@ -1,9 +1,9 @@
 /**
- * visual-feedback/react — dev-only React adapter.
+ * @evgentus/visual-feedback/react — dev-only React adapter.
  *
  * Render `<VisualFeedback />` once near your app root (in dev). It mounts the framework-agnostic
  * overlay and POSTs feedback batches to the local MCP channel server. Pair with
- * `visual-feedback/vite` so the overlay can map a clicked element back to source
+ * `@evgentus/visual-feedback/vite` so the overlay can map a clicked element back to source
  * (it injects `data-vf-source`, which the core resolver reads).
  *
  * Mounting is fail-closed: the overlay activates only when the bundler statically marks the
@@ -12,7 +12,7 @@
  * still cleaner — it lets the bundler drop the import (and the overlay code) entirely.
  */
 import { useEffect } from 'react';
-import { createVisualFeedback, type VisualFeedbackOptions } from 'visual-feedback';
+import { createVisualFeedback, type VisualFeedbackOptions } from '@evgentus/visual-feedback';
 
 export interface VisualFeedbackProps {
   /** MCP channel server port. Default 3199. Ignored when `endpoint` is set. */

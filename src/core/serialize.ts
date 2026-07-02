@@ -40,7 +40,7 @@ const readAttr = (el: Element, name: string): string | null => el.getAttribute(n
 /**
  * Default resolver — interoperates with the common dev source-attribute conventions, in
  * precedence so it works out of the box AND picks up an inspector the host app already uses:
- *   1. `data-vf-source`   — our visual-feedback/vite plugin ("file:line:col")
+ *   1. `data-vf-source`   — our @evgentus/visual-feedback/vite plugin ("file:line:col")
  *   2. `data-v-inspector` — Nuxt DevTools / vite-plugin-vue-inspector ("file:line:col")
  *   3. `data-inspector-relative-path` (+ `-line`/`-column`) — react-dev-inspector / Locator
  * Returns null if none are present (e.g. a production build with no inspector).

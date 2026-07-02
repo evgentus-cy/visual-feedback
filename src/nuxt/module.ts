@@ -1,5 +1,5 @@
 /**
- * visual-feedback/nuxt — dev-only Nuxt module.
+ * @evgentus/visual-feedback/nuxt — dev-only Nuxt module.
  *
  * App footprint = one line in `modules` + one devDependency. The module owns the dev/prod
  * gate: in a production build (`!nuxt.options.dev`) it registers nothing, so the overlay +
@@ -17,7 +17,7 @@ export interface ModuleOptions {
 
 const visualFeedbackModule: NuxtModule<ModuleOptions> = defineNuxtModule<ModuleOptions>({
   meta: {
-    name: 'visual-feedback',
+    name: '@evgentus/visual-feedback',
     configKey: 'visualFeedback',
     compatibility: { nuxt: '^4.0.0' },
   },

@@ -1,5 +1,5 @@
 import type { ReactElement } from 'react';
-import { VisualFeedback } from 'visual-feedback/react';
+import { VisualFeedback } from '@evgentus/visual-feedback/react';
 
 export function App(): ReactElement {
   return (
