@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Demo GIF in the README (the full loop: overlay → comment → Send → Claude fixes).
+- README note on registering the MCP server in pnpm monorepos (direct `node` path instead of
+  `npx`; keep the dependency inside the sub-app to avoid a duplicated `nuxt` peer instance).
+
 ## [0.1.1] - 2026-07-02
 
 ### Changed

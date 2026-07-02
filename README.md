@@ -11,7 +11,7 @@ the terminal.
 [![npm](https://img.shields.io/npm/v/%40evgentus%2Fvisual-feedback)](https://www.npmjs.com/package/@evgentus/visual-feedback)
 [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-<!-- TODO: demo GIF — click → comment → Claude fixes (docs/demo.gif) -->
+![Demo: toggle the overlay, comment on elements, press Send — the batch lands in a live Claude Code session and Claude starts fixing](https://raw.githubusercontent.com/evgentus-cy/visual-feedback/main/docs/demo.gif)
 
 **Dev-only by design, stripped from production builds.** Push-only by design —
 [Claude Code Channels](https://code.claude.com/docs/en/channels) is a hard requirement (research
@@ -113,6 +113,13 @@ In your repo's `.mcp.json`:
   }
 }
 ```
+
+> **Monorepo note:** `npx` finds the bin when the package is installed at the workspace root.
+> In a pnpm monorepo where the dependency lives in a sub-app, point at the file instead —
+> `"command": "node", "args": ["apps/web/node_modules/@evgentus/visual-feedback/dist/mcp/server.js"]`
+> — and keep the dependency **inside the sub-app**: its optional `nuxt` peer makes pnpm resolve a
+> second `nuxt` instance when it is also a root-level dependency, which breaks the Nuxt dev server
+> in confusing ways.
 
 ### 4. Start the receiving session
 

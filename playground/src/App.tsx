@@ -22,7 +22,7 @@ export function App(): ReactElement {
         data-feedback="demo-hero"
         style={{ marginTop: 24, padding: 16, border: '1px solid #ccc', borderRadius: 8 }}
       >
-        <h2>A marked block</h2>
+        <h2 style={{ color: 'black' }}>A marked block</h2>
         <p>
           This section carries <code>data-feedback="demo-hero"</code> — a refactor-proof handle the
           overlay prefers over the line-based source location.
