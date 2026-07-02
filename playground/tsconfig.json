@@ -6,6 +6,14 @@
     "lib": ["ES2023", "DOM", "DOM.Iterable"],
     "jsx": "react-jsx",
     "types": ["vite/client"],
+    // Types resolve to the library SOURCE so typecheck/lint work in a clean checkout
+    // (the package exports point at dist/, which only exists after a build). Runtime
+    // resolution is unaffected: Vite resolves via node_modules (link:..) + exports.
+    "paths": {
+      "visual-feedback": ["../src/core/index.ts"],
+      "visual-feedback/vite": ["../src/vite/index.ts"],
+      "visual-feedback/react": ["../src/react/index.tsx"]
+    },
     "strict": true,
     "skipLibCheck": true,
     "noEmit": true
