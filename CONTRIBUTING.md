@@ -71,7 +71,10 @@ It chains the standard npm `version` lifecycle:
    (fails if Unreleased is empty — every release must say what changed).
 4. npm commits `vX.Y.Z` and tags it; `postversion` pushes with `--follow-tags`.
 5. The tag triggers the [Release workflow](.github/workflows/release.yml), which re-runs the
-   checks and publishes to npm **with provenance** (requires the `NPM_TOKEN` repo secret; the
-   workflow also refuses a tag that doesn't match `package.json`).
+   checks and publishes to npm **with provenance** via [Trusted
+   Publishing](https://docs.npmjs.com/trusted-publishers/) (OIDC) — no npm token anywhere; the
+   workflow identity itself is registered as a trusted publisher on npmjs.com, and it refuses a
+   tag that doesn't match `package.json`.
 
-Nothing is ever published from a laptop — `npm publish` happens only in CI.
+Nothing is ever published from a laptop — after the initial `0.1.0` bootstrap, `npm publish`
+happens only in CI.
