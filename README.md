@@ -139,7 +139,7 @@ VISUAL_FEEDBACK_CHANNEL=1 claude --dangerously-load-development-channels server:
 
 ### 5. Use it
 
-1. Toggle the overlay with **`Alt+C`** in the dev app.
+1. Toggle the overlay with **`Alt+C`** (`⌥C` on macOS) in the dev app.
 2. Hover any element to highlight it, then click it — a comment popover opens. Write your note
    (`Ctrl`/`⌘+Enter` to add).
 3. Repeat to **batch** several comments across the page.
