@@ -1,0 +1,9 @@
+{
+  "$comment": "Dogfooding: run the MCP channel server from source in this repo. Launch the ONE receiving session with `VISUAL_FEEDBACK_CHANNEL=1 claude --dangerously-load-development-channels server:visual-feedback`. Consumers of the npm package use `npx visual-feedback-mcp` instead — see README.",
+  "mcpServers": {
+    "visual-feedback": {
+      "command": "node",
+      "args": ["--experimental-strip-types", "src/mcp/server.ts"]
+    }
+  }
+}

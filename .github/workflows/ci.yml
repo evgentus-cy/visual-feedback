@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run: pnpm build
+      - run: pnpm --filter visual-feedback-playground build
+      - name: Verify the tarball ships only dist + docs
+        run: |
+          pnpm pack
+          tar -tzf visual-feedback-*.tgz | sort
+          if tar -tzf visual-feedback-*.tgz | grep -v -E '^package/(dist/|README\.md$|LICENSE$|CHANGELOG\.md$|package\.json$)'; then
+            echo "Unexpected files in the tarball" && exit 1
+          fi
+      - name: Lint the published package shape
+        run: npx --yes publint

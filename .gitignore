@@ -1,0 +1,13 @@
+# deps / build
+node_modules/
+dist/
+playground/dist/
+coverage/
+*.tgz
+
+# runtime artefacts of the MCP server (dogfooding)
+.claude/feedback/
+
+# misc
+*.log
+.DS_Store
