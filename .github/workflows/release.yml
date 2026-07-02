@@ -30,5 +30,7 @@ jobs:
       - run: pnpm test
       # No npm token: auth goes through npm Trusted Publishing (OIDC) — the workflow
       # identity (repo evgentus-cy/visual-feedback, file release.yml) is registered as a
-      # trusted publisher on npmjs.com. prepublishOnly runs the build.
-      - run: pnpm publish --access public --provenance --no-git-checks
+      # trusted publisher on npmjs.com. The OIDC exchange needs npm >= 11.5.1; the runner's
+      # bundled npm 10 fails with ENEEDAUTH, so upgrade first. prepublishOnly runs the build.
+      - run: npm install -g npm@latest
+      - run: npm publish --access public --provenance
