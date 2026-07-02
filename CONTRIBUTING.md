@@ -5,6 +5,10 @@ improvements are all welcome.
 
 ## Dev setup
 
+**Node ≥ 22.12 is required for development** (the `nuxt` devDependency and the
+`--experimental-strip-types` dogfood config in `.mcp.json` demand it). The published package
+itself runs on Node ≥ 20.19.
+
 ```sh
 pnpm install
 pnpm build          # tsup — builds all five entry points into dist/

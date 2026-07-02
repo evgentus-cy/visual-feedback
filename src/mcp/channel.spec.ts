@@ -137,7 +137,7 @@ describe('createRequestListener (HTTP)', () => {
     const listener = createRequestListener({
       notify,
       config,
-      isOriginAllowed: (origin) => origin === 'http://localhost:3101',
+      isOriginAllowed: (origin) => origin === 'http://localhost:5173',
     });
     const current = createServer(listener);
     server = current;

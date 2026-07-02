@@ -5,9 +5,13 @@ export default defineConfig({
   resolve: {
     // Specs exercise src directly; the `visual-feedback` self-import (react adapter,
     // Nuxt runtime plugin) maps to the core source instead of the built dist.
-    alias: {
-      'visual-feedback': path.resolve(import.meta.dirname, 'src/core/index.ts'),
-    },
+    alias: [
+      // exact-match regex: a string key would also prefix-match 'visual-feedback/<subpath>'
+      {
+        find: /^visual-feedback$/,
+        replacement: path.resolve(import.meta.dirname, 'src/core/index.ts'),
+      },
+    ],
   },
   test: {
     environment: 'happy-dom',

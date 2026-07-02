@@ -23,6 +23,7 @@ export default defineConfig([
     format: ['esm'],
     dts: true,
     clean: true,
+    sourcemap: true,
     target: 'node20',
     external: ['vite'],
   },
@@ -36,6 +37,7 @@ export default defineConfig([
     format: ['esm'],
     dts: true,
     clean: true,
+    sourcemap: true,
     target: 'node20',
     // Nuxt virtuals + framework deps stay external — the runtime plugin file is shipped
     // unbundled and resolved by the consumer's Nuxt/Vite at build time.
@@ -47,13 +49,16 @@ export default defineConfig([
     format: ['esm'],
     dts: true,
     clean: true,
+    sourcemap: true,
     external: ['visual-feedback'],
   },
   {
     entry: { server: 'src/mcp/server.ts', channel: 'src/mcp/channel.ts' },
     outDir: 'dist/mcp',
     format: ['esm'],
-    dts: true,
+    // dts only for the programmatic API: server.ts exports nothing, and its emitted
+    // declaration would be a shebang-only (invalid) .d.ts.
+    dts: { entry: { channel: 'src/mcp/channel.ts' } },
     clean: true,
     target: 'node20',
     sourcemap: true,

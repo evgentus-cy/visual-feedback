@@ -28,6 +28,10 @@ preview; see [prerequisites](#prerequisites)).
                                                              └─ lands in the live session → Claude reads & fixes
 ```
 
+The browser and the MCP server both run on the **host**, so the POST is host-local
+(`127.0.0.1`) — a dev app served from a Docker container doesn't change the delivery path and
+needs no extra port mapping for `3199`.
+
 One npm package, five entry points:
 
 | Entry                   | What it is                                                                                                 |
@@ -129,12 +133,12 @@ VISUAL_FEEDBACK_CHANNEL=1 claude --dangerously-load-development-channels server:
 ### 5. Use it
 
 1. Toggle the overlay with **`Alt+C`** in the dev app.
-2. Hover any element → it highlights and shows a **comment** button. Write your note
+2. Hover any element to highlight it, then click it — a comment popover opens. Write your note
    (`Ctrl`/`⌘+Enter` to add).
 3. Repeat to **batch** several comments across the page.
 4. Optionally tick **attach screenshot** and drag a highlight box on it.
 5. Press **Send** → the batch lands in your Claude Code session and Claude starts working.
-6. **No session / no connection?** The overlay shows **○ no session** and the batch is kept in
+6. **No session / no connection?** The connection dot turns red (tooltip: _No Claude session_) and the batch is kept in
    `localStorage` — start a session and press Send again; nothing is lost.
 
 ### Marking components (optional)
@@ -194,6 +198,7 @@ The port is exposed via `runtimeConfig.public.visualFeedbackPort`; override at r
 | ---------- | ------------------------- | ----------------------------------------------------------------------------- |
 | `port`     | `3199`                    | MCP server port; must match its `VISUAL_FEEDBACK_PORT`                        |
 | `endpoint` | `http://127.0.0.1:<port>` | full endpoint URL override                                                    |
+| `enabled`  | `import.meta.env.DEV`     | force on/off; unknown environments (no `import.meta.env`) stay **off**        |
 | `options`  | —                         | pass-through core options (`resolveSource`, `captureScreenshot`, `hotkey`, …) |
 
 ### Vite plugin options
@@ -205,16 +210,17 @@ The port is exposed via `runtimeConfig.public.visualFeedbackPort`; override at r
 
 ### Core options
 
-| Option              | Default                        | Notes                                                           |
-| ------------------- | ------------------------------ | --------------------------------------------------------------- |
-| `transport`         | — (required)                   | `{ send(batch) }` — where a flushed batch goes                  |
-| `resolveSource`     | reads the attributes above     | `(el) => SourceLocation \| null`                                |
-| `captureScreenshot` | `html2canvas` (dynamic import) | `(el) => Promise<dataURL \| undefined>`                         |
-| `getRoute`          | full client path               | route string attached to each item                              |
-| `hotkey`            | `Alt+KeyC`                     | `KeyboardEvent.code` + optional `Alt+`/`Ctrl+`/`Shift+`/`Meta+` |
-| `storageKey`        | `visual-feedback:queue`        | localStorage key (queue survives reloads)                       |
-| `healthCheck`       | —                              | `() => Promise<boolean>`; omit to hide the connection indicator |
-| `idGenerator`       | `crypto.randomUUID` + fallback | item id factory                                                 |
+| Option              | Default                        | Notes                                                                                          |
+| ------------------- | ------------------------------ | ---------------------------------------------------------------------------------------------- |
+| `transport`         | — (required)                   | `{ send(batch) }` — where a flushed batch goes                                                 |
+| `resolveSource`     | reads the attributes above     | `(el) => SourceLocation \| null`                                                               |
+| `captureScreenshot` | `html2canvas` (dynamic import) | `(el) => Promise<dataURL \| undefined>`                                                        |
+| `getRoute`          | full client path               | route string attached to each item                                                             |
+| `getPageContext`    | reads the window               | viewport / DPR / lang / color-scheme for the batch `Context:` line; return `undefined` to omit |
+| `hotkey`            | `Alt+KeyC`                     | `KeyboardEvent.code` + optional `Alt+`/`Ctrl+`/`Shift+`/`Meta+`                                |
+| `storageKey`        | `visual-feedback:queue`        | localStorage key (queue survives reloads)                                                      |
+| `healthCheck`       | —                              | `() => Promise<boolean>`; omit to hide the connection indicator                                |
+| `idGenerator`       | `crypto.randomUUID` + fallback | item id factory                                                                                |
 
 ## Production safety (nothing ships)
 
@@ -223,8 +229,10 @@ Defense-in-depth:
 1. The Nuxt module self-disables in prod (`if (!nuxt.options.dev) return`) — the overlay and its
    core import never enter the production bundle.
 2. The Vite plugin is `apply: 'serve'` — it never runs in `vite build`.
-3. The React adapter no-ops on `import.meta.env.PROD` (gate it behind `import.meta.env.DEV` at
-   the call site to keep it out of the tree entirely).
+3. The React adapter is fail-closed: it mounts only when the bundler statically marks the build
+   as dev (`import.meta.env.DEV === true`) or when `enabled` is passed explicitly. Gating it
+   behind `import.meta.env.DEV` at the call site is still better — the bundler then drops the
+   import (and all overlay code) from production bundles entirely.
 
 Suggested CI invariant: build your app for production and grep the output for
 `visual-feedback` / `data-vf-source` — zero matches.
@@ -250,7 +258,7 @@ Suggested CI invariant: build your app for production and grep the output for
 | `[visual-feedback] HTTP endpoint OFF` in logs                    | This session wasn't marked with `VISUAL_FEEDBACK_CHANNEL=1` — expected for every session except your one channel session.                                                                                                                                  |
 | curl returns `403 forbidden origin`                              | Non-loopback dev origin — add it to `VISUAL_FEEDBACK_ALLOWED_ORIGINS`.                                                                                                                                                                                     |
 | Delivered, but Claude pauses on every edit                       | Not hands-off — run the session in accept-edits mode / with a permission allowlist.                                                                                                                                                                        |
-| Overlay dot shows **○ no session**                               | `GET /health` failed: port mismatch (overlay port ↔ server `VISUAL_FEEDBACK_PORT`) or no `VISUAL_FEEDBACK_CHANNEL=1` session running.                                                                                                                      |
+| Connection dot stays red (no session)                            | `GET /health` failed: port mismatch (overlay port ↔ server `VISUAL_FEEDBACK_PORT`) or no `VISUAL_FEEDBACK_CHANNEL=1` session running.                                                                                                                      |
 
 ## Playground
 

@@ -6,8 +6,10 @@
  * `visual-feedback/vite` so the overlay can map a clicked element back to source
  * (it injects `data-vf-source`, which the core resolver reads).
  *
- * It renders nothing and is a no-op in production builds (guarded on import.meta.env.PROD), so
- * it can be left in the tree — though gating it behind a dev check at the call site is cleaner.
+ * Mounting is fail-closed: the overlay activates only when the bundler statically marks the
+ * build as development (`import.meta.env.DEV === true` — Vite dev, vitest) or when the `enabled`
+ * prop is passed explicitly. Gating the element behind `import.meta.env.DEV` at the call site is
+ * still cleaner — it lets the bundler drop the import (and the overlay code) entirely.
  */
 import { useEffect } from 'react';
 import { createVisualFeedback, type VisualFeedbackOptions } from 'visual-feedback';
@@ -17,18 +19,36 @@ export interface VisualFeedbackProps {
   port?: number;
   /** Full endpoint URL (defaults to `http://127.0.0.1:<port>`). */
   endpoint?: string;
+  /**
+   * Force the overlay on/off. Default: `import.meta.env.DEV === true` — only a build the
+   * bundler statically marks as dev mounts; unknown environments (no `import.meta.env`,
+   * e.g. a non-Vite production bundle) stay OFF.
+   */
+  enabled?: boolean;
   /** Pass-through core options (resolveSource, captureScreenshot, hotkey, storageKey, …). */
   options?: Omit<VisualFeedbackOptions, 'transport'>;
 }
 
-function isProduction(): boolean {
-  const meta = import.meta as { env?: { PROD?: boolean } };
-  return meta.env?.PROD === true;
+// `import.meta.env` must stay a direct member expression — bundlers replace it statically,
+// and aliasing `import.meta` into a variable defeats the replacement (the overlay would then
+// decide at runtime, where a bare ESM `import.meta` has no `env` at all).
+function isBundlerDev(): boolean {
+  try {
+    return (import.meta as { env?: { DEV?: boolean } }).env?.DEV === true;
+  } catch {
+    return false;
+  }
 }
 
-export function VisualFeedback({ port = 3199, endpoint, options }: VisualFeedbackProps): null {
+export function VisualFeedback({
+  port = 3199,
+  endpoint,
+  enabled,
+  options,
+}: VisualFeedbackProps): null {
+  const active = enabled ?? isBundlerDev();
   useEffect(() => {
-    if (isProduction()) return;
+    if (!active) return;
     const url = endpoint ?? `http://127.0.0.1:${String(port)}`;
     const handle = createVisualFeedback({
       healthCheck: async () => {
@@ -56,7 +76,7 @@ export function VisualFeedback({ port = 3199, endpoint, options }: VisualFeedbac
     return () => {
       handle.destroy();
     };
-  }, [port, endpoint, options]);
+  }, [active, port, endpoint, options]);
 
   return null;
 }

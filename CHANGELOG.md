@@ -29,3 +29,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `VISUAL_FEEDBACK_ALLOWED_ORIGINS` (comma-separated) extends the allowlist for
   non-loopback dev hosts. Previously the allowlist was hardcoded.
 - Receiver-policy instructions genericized (no references to a specific repo's conventions).
+- The React adapter's mounting is now **fail-closed**: the overlay activates only when the
+  bundler statically marks a dev build (`import.meta.env.DEV === true`) or via the new
+  `enabled` prop. The internal version checked `import.meta.env.PROD` through an aliased
+  `import.meta`, which defeated the bundler's static replacement and let the overlay mount in
+  production bundles when `<VisualFeedback />` was rendered unconditionally.
